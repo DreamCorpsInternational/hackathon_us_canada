@@ -1,9 +1,15 @@
 package com.example.hackathon_us_canada;
 
+
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.ListActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,23 +27,25 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+       
         
-        
+      
+        ArrayList<Book> bookList = getBookList();
+        BookListviewAdapter adapter = new BookListviewAdapter(this, R.layout.book_row_layout,bookList);
         ListView bookListView = (ListView) findViewById(R.id.bookListview);
-        String[] bookNames = new String[]{"1","2"};
-        String[] bookDescp = new String[]{"desciption1111","description2222"};
-        
-        //ArrayList<Book>
-        //for(int i = 0; i < bookNames.length; i++) {
-        	
-        //}
+        bookListView.setAdapter(adapter);
     }
 
+    private ArrayList<Book> getBookList() {
+    	 String[] bookNames = new String[]{"1","2"};
+         String[] bookDescp = new String[]{"desciption1111","description2222"};
+         
+         ArrayList<Book> bookList = new ArrayList<Book>();
+         for(int i = 0; i < bookNames.length; i++) {
+         	bookList.add((new Book(bookNames[i],bookDescp[i],"http://icons.iconarchive.com/icons/robinweatherall/library/256/book-open-icon.png")));
+         }
+         return bookList;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,20 +67,6 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
+    
 
 }

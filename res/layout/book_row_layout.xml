@@ -4,21 +4,22 @@
     android:layout_height="wrap_content" 
     android:layout_margin="10dp">
     
-<!--      <ImageView -->
-<!--         android:id="@+id/img" -->
-<!--         android:layout_width="80dp" -->
-<!--         android:layout_height="80dp" -->
-<!--         android:layout_marginLeft="5dp" -->
-<!--         android:layout_alignParentLeft="true"/> -->
+    
+     <ImageView
+        android:id="@+id/img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentLeft="true"/>
  
     <TextView
         android:id="@+id/name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/img"
+        android:layout_alignTop="@id/img"
         android:layout_marginTop="10dip"
         android:layout_marginLeft="20dip"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@id/img"
         android:textStyle="bold" 
         android:textSize = "17dip"
         />
