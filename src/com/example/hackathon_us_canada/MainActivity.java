@@ -9,9 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.os.Build;
 
 public class MainActivity extends Activity {
+	
+	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,16 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        
+        
+        ListView bookListView = (ListView) findViewById(R.id.bookListview);
+        String[] bookNames = new String[]{"1","2"};
+        String[] bookDescp = new String[]{"desciption1111","description2222"};
+        
+        //ArrayList<Book>
+        //for(int i = 0; i < bookNames.length; i++) {
+        	
+        //}
     }
 
 
