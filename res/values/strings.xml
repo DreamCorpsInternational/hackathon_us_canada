@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">hackathon_us_canada</string>
     <string name="hello_world">Hello world!!</string>
     <string name="action_settings">Settings</string>
     <string name="bookcover_pager">Book Cover Pager</string>
+    <string name="book_listview">Book List</string>
 
 </resources>

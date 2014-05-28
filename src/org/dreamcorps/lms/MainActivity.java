@@ -1,10 +1,11 @@
 package org.dreamcorps.lms;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.dreamcorps.content.Book;
 import org.dreamcorps.content.Constants;
-import org.dreamcorps.ui.BookListviewAdapter;
+import org.dreamcorps.ui.BookListviewActivity;
 import org.dreamcorps.ui.ImagePagerActivity;
 
 import android.app.Activity;
@@ -13,9 +14,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -28,38 +31,35 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 public class MainActivity extends Activity
 {
 
-    private ArrayList<Book> bookList;
+ 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initImageLoader(getApplicationContext());
-
-        bookList = getBookList();
-        BookListviewAdapter adapter = new BookListviewAdapter(this, R.layout.book_row_layout, bookList);
-        ListView bookListView = (ListView) findViewById(R.id.bookListview);
-        bookListView.setOnItemClickListener(new OnItemClickListener() {
+        ImageView splashScreen = (ImageView) findViewById(R.id.mainSplashScreen);
+        Random random = new Random();
+        if(random.nextInt(10) > 5) {
+            splashScreen.setImageResource(R.drawable.splashscreen);
+        } else {
+            splashScreen.setImageResource(R.drawable.yangyu);
+        }
+       
+        
+        splashScreen.setOnTouchListener(new View.OnTouchListener() {
+            
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startImagePagerActivity(position);
+            public boolean onTouch(View v, MotionEvent event) {
+                startBookListviewActivity();
+                return false;
             }
         });
-        bookListView.setAdapter(adapter);
+        initImageLoader(getApplicationContext());
+
+      
     }
 
-    private ArrayList<Book> getBookList() {
-        String[] bookNames = new String[] { "1", "2" };
-        String[] bookDescp = new String[] { "desciption1111", "description2222" };
-
-        ArrayList<Book> bookList = new ArrayList<Book>();
-        for (int i = 0; i < bookNames.length; i++) {
-            bookList.add((new Book(bookNames[i], bookDescp[i],
-                    "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg")));
-        }
-        return bookList;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,11 +97,9 @@ public class MainActivity extends Activity
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
     }
-
-    private void startImagePagerActivity(int position) {
-        Intent intent = new Intent(this, ImagePagerActivity.class);
-        intent.putExtra(Constants.bookList, bookList);
-        intent.putExtra(Constants.position, position);
+    
+    private void startBookListviewActivity() {
+        Intent intent = new Intent(this,BookListviewActivity.class);
         startActivity(intent);
     }
 
