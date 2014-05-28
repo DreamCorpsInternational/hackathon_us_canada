@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImagePagerActivity"
+            android:name="org.dreamcorps.ui.ImagePagerActivity"
             android:label="@string/bookcover_pager" />
 
         <provider
