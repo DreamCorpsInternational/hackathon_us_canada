@@ -6,8 +6,8 @@ package org.dreamcorps.lms;
 
 public class C
 {
-    public final static String NPR_MODEL_NAME = "NPR Stories";
-    public final static String NPR_AUTHORITY = "api.npr.org";
+    public final static String DOUBAN_MODEL_NAME = "Douban books";
+    public final static String DOUBAN_AUTHORITY = "api.douban.com";
     public final static String COLLECTION_NAME_PROGRAMS = "programs";
     public final static String COLLECTION_NAME_STORIES = "stories";
 

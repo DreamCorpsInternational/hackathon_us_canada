@@ -25,22 +25,17 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-<<<<<<< HEAD
         </activity>
+        <activity
+            android:name=".ImagePagerActivity"
+            android:label="@string/bookcover_pager" />
 
         <provider
             android:name="org.dreamcorps.content.LmsContentProvider"
-            android:authorities="api.npr.org"
+            android:authorities="org.dreamcorps.content.LmsContentProvider"
             android:exported="false" />
 
         <service android:name="ca.dragonflystudios.content.service.Service" />
     </application>
-=======
-        </activity> 
-         <activity
-            android:name=".ImagePagerActivity"
-            android:label="@string/bookcover_pager" />
-    	</application>
->>>>>>> listview
 
 </manifest>

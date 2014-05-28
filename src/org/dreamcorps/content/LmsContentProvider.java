@@ -33,6 +33,6 @@ public class LmsContentProvider extends Provider
             }
         };
 
-        final Model NprModel = new Model(C.NPR_MODEL_NAME, C.NPR_AUTHORITY, 1, new Collection[]{NprPrograms, NprProgramItems});
+        final Model NprModel = new Model(C.DOUBAN_MODEL_NAME, C.DOUBAN_AUTHORITY, 1, new Collection[]{NprPrograms, NprProgramItems});
     }
 }
