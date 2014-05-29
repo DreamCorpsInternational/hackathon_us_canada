@@ -11,7 +11,9 @@ import org.dreamcorps.lms.C;
 import org.dreamcorps.lms.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,8 +43,8 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class BookListviewActivity extends Activity {
-
+public class BookListviewActivity extends Activity
+{
 
     private ArrayList<Book> bookList;
 
@@ -90,7 +93,26 @@ public class BookListviewActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("图书录入");
+            alert.setMessage("请输入ISBN");
+
+            final EditText input = new EditText(this);
+            alert.setView(input);
+
+            alert.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String srt = input.getEditableText().toString();
+                }
+            });
+            alert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alertDialog = alert.create();
+            alertDialog.show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -113,8 +135,7 @@ public class BookListviewActivity extends Activity {
         ImageLoader.getInstance().init(config);
     }
 
-    public static void requestBookInfo(Context context, String isbn)
-    {
+    public static void requestBookInfo(Context context, String isbn) {
         Collection collection = Model.getModelByAuthority(C.DOUBAN_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
         final Intent intent = new Intent(context, Service.class);
         intent.putExtra(Service.KEY_COLLECTION_ID, collection.getId());
@@ -128,7 +149,7 @@ public class BookListviewActivity extends Activity {
         intent.putExtra(Constants.position, position);
         startActivity(intent);
     }
-    
+
     class BookListviewAdapter extends ArrayAdapter<Book>
     {
 
@@ -212,5 +233,5 @@ public class BookListviewActivity extends Activity {
             }
         }
     }
-   
+
 }
