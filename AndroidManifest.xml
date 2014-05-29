@@ -35,7 +35,7 @@
 
         <provider
             android:name="org.dreamcorps.content.LmsContentProvider"
-            android:authorities="org.dreamcorps.content.LmsContentProvider"
+            android:authorities="@string/dreamcorps_authority"
             android:exported="false" />
 
         <service android:name="ca.dragonflystudios.content.service.Service" />

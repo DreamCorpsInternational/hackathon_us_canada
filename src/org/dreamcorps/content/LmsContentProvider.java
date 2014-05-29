@@ -18,7 +18,7 @@ public class LmsContentProvider extends Provider
         // Note that the constructors for Collection and Model self-register the instances created
         final Collection DoubanBooks = new Collection(C.COLLECTION_NAME_BOOKS, C.bookFields,
                 "https://api.douban.com/v2/book/isbn/%s", null,
-                new JsonPath[]{new JsonPath("id"), new JsonPath("title"), new JsonPath("author"), new JsonPath("isbn13"), new JsonPath("summary"), new JsonPath("images", "small"), new JsonPath("images", "large") })        {
+                new JsonPath[]{new JsonPath("id"), new JsonPath("title"), new JsonPath("author", 0), new JsonPath("isbn13"), new JsonPath("summary"), new JsonPath("images", "small"), new JsonPath("images", "large") })        {
             @Override
             public String getUrl(String[] selectionArgs)
             {
@@ -26,6 +26,6 @@ public class LmsContentProvider extends Provider
             }
         };
 
-        final Model DoubanModel = new Model(C.DOUBAN_MODEL_NAME, C.DOUBAN_AUTHORITY, 1, new Collection[]{ DoubanBooks });
+        final Model DoubanModel = new Model(C.DREAMCORPS_MODEL_NAME, C.DREAMCORPS_AUTHORITY, 1, new Collection[]{ DoubanBooks });
     }
 }

@@ -103,7 +103,8 @@ public class BookListviewActivity extends Activity
 
             alert.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    String srt = input.getEditableText().toString();
+                    String isbn = input.getEditableText().toString();
+                    BookListviewActivity.requestBookInfo(BookListviewActivity.this, isbn);
                 }
             });
             alert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -136,7 +137,7 @@ public class BookListviewActivity extends Activity
     }
 
     public static void requestBookInfo(Context context, String isbn) {
-        Collection collection = Model.getModelByAuthority(C.DOUBAN_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
+        Collection collection = Model.getModelByAuthority(C.DREAMÇORPS_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
         final Intent intent = new Intent(context, Service.class);
         intent.putExtra(Service.KEY_COLLECTION_ID, collection.getId());
         intent.putExtra(Service.KEY_SELECTION_ARGS, new String[] { isbn });

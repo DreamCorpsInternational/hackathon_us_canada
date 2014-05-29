@@ -11,4 +11,5 @@
     <string name="bookcover_pager">Book Cover Pager</string>
     <string name="book_listview">Book List</string>
 
+    <string name="dreamcorps_authority">org.dreamcorps.content</string>
 </resources>
