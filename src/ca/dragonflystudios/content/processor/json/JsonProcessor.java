@@ -38,22 +38,36 @@ public class JsonProcessor implements StreamParser, ContentsExtractor
     public ContentValues[] extract(Object base, int collectionId)
     {
         final Collection collection = Model.getCollection(collectionId);
-        final ArrayNode contentsNode = (ArrayNode) JsonPath.nodeAtPath((JsonNode) base, (JsonPath) collection.itemsPath);
-        final ContentValues[] contents = new ContentValues[contentsNode.size()];
 
-        for (int i = 0; i < contentsNode.size(); i++) {
-            final JsonNode contentNode = contentsNode.get(i);
-            if (contentNode.isMissingNode())
-                continue;
-
+        if (null != collection.itemsPath) {
+            final ArrayNode contentsNode = (ArrayNode) JsonPath.nodeAtPath((JsonNode) base, (JsonPath) collection.itemsPath);
+            final ContentValues[] contents = new ContentValues[contentsNode.size()];
+    
+            for (int i = 0; i < contentsNode.size(); i++) {
+                final JsonNode contentNode = contentsNode.get(i);
+                if (contentNode.isMissingNode())
+                    continue;
+    
+                ContentValues row = new ContentValues();
+                for (int j = 0; j < collection.itemFieldNames.length; j++) {
+                    JsonNode valueNode = JsonPath.nodeAtPath(contentNode, (JsonPath) collection.itemFieldPaths[j]);
+                    // TODO handle data types other than String
+                    row.put(collection.itemFieldNames[j], valueNode.asText());
+                }
+                contents[i] = row;
+            }
+            return contents;
+        } else { // single item!
+            final ContentValues[] contents = new ContentValues[1];
             ContentValues row = new ContentValues();
             for (int j = 0; j < collection.itemFieldNames.length; j++) {
-                JsonNode valueNode = JsonPath.nodeAtPath(contentNode, (JsonPath) collection.itemFieldPaths[j]);
+                JsonNode valueNode = JsonPath.nodeAtPath((JsonNode) base, (JsonPath) collection.itemFieldPaths[j]);
                 // TODO handle data types other than String
                 row.put(collection.itemFieldNames[j], valueNode.asText());
             }
-            contents[i] = row;
+            contents[0] = row;
+
+            return contents;
         }
-        return contents;
     }
 }
