@@ -1,7 +1,14 @@
 package org.dreamcorps.content;
 
+import org.dreamcorps.lms.C;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import ca.dragonflystudios.content.model.Collection;
+import ca.dragonflystudios.content.model.Model;
+import ca.dragonflystudios.content.service.Service;
 
 public class Book implements Parcelable
 {
