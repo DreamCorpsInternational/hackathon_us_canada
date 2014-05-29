@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.dragonflystudios.content.model.Collection;
 import ca.dragonflystudios.content.model.Model;
@@ -139,6 +140,8 @@ public class ImagePagerActivity extends Activity
             assert imageLayout != null;
             ImageView imageView = (ImageView) imageLayout.findViewById(R.id.pager_image);
             final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
+            final TextView titleView = (TextView) imageLayout.findViewById(R.id.title);
+            final TextView summaryView = (TextView) imageLayout.findViewById(R.id.summary);
 
             mCursor.moveToPosition(position);
             final String imageUrl = mCursor.getString(mCursor.getColumnIndex(C.field.imageLarge));
@@ -178,6 +181,10 @@ public class ImagePagerActivity extends Activity
                     spinner.setVisibility(View.GONE);
                 }
             });
+            final String title = mCursor.getString(mCursor.getColumnIndex(C.field.title));
+            final String summary = mCursor.getString(mCursor.getColumnIndex(C.field.summary));
+            titleView.setText(title);
+            summaryView.setText(summary);
 
             view.addView(imageLayout, 0);
             return imageLayout;
