@@ -12,9 +12,13 @@ import org.dreamcorps.lms.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import ca.dragonflystudios.content.model.Collection;
 import ca.dragonflystudios.content.model.Model;
@@ -43,8 +48,13 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class BookListviewActivity extends Activity
+public class BookListviewActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
+
+    private SimpleCursorAdapter mBooksAdapter;
+    private ImageLoader mImageLoader;
+    private DisplayImageOptions mOptions;
+    private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 
     private ArrayList<Book> bookList;
 
@@ -54,9 +64,18 @@ public class BookListviewActivity extends Activity
         setContentView(R.layout.book_listview);
 
         initImageLoader(getApplicationContext());
+        mImageLoader = ImageLoader.getInstance();
+        mOptions = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub)
+                .showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+                .cacheOnDisk(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(20)).build();
 
-        bookList = getBookList();
-        BookListviewAdapter adapter = new BookListviewAdapter(this, R.layout.book_row_layout, bookList);
+        getLoaderManager().initLoader(BOOKINFO_LOADER_ID, null, this);
+        mBooksAdapter = new SimpleCursorAdapter(this, R.layout.book_row_layout, null, new String[] { C.field.title, C.field.isbn, C.field.imageSmall }, new int[] { R.id.name, R.id.desc, R.id.img }, 0) {
+            public void setViewImage (ImageView v, String value) {
+                mImageLoader.displayImage(value, v, mOptions, mAnimateFirstListener);
+            }
+        };
+
         ListView bookListView = (ListView) findViewById(R.id.bookListview);
         bookListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -64,7 +83,8 @@ public class BookListviewActivity extends Activity
                 startImagePagerActivity(position);
             }
         });
-        bookListView.setAdapter(adapter);
+        //bookListView.setAdapter(adapter);
+        bookListView.setAdapter(mBooksAdapter);
     }
 
     private ArrayList<Book> getBookList() {
@@ -117,6 +137,44 @@ public class BookListviewActivity extends Activity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private static final int BOOKINFO_LOADER_ID = 1;
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+    {
+        switch (i) {
+            case BOOKINFO_LOADER_ID:
+                Collection collection = Model.getModelByAuthority(C.DREAMCORPS_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
+                return new CursorLoader(this, collection.getUri(), collection.itemFieldNamesWithId, null, null, null);
+            default:
+                throw new RuntimeException("Invalid loader id: " + i);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+    {
+        switch (cursorLoader.getId()) {
+            case BOOKINFO_LOADER_ID:
+                mBooksAdapter.swapCursor(cursor);
+                return;
+            default:
+                throw new RuntimeException("Invalid loader id: " + cursorLoader.getId());
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader)
+    {
+        switch (cursorLoader.getId()) {
+            case BOOKINFO_LOADER_ID:
+                mBooksAdapter.swapCursor(null);
+                return;
+            default:
+                throw new RuntimeException("Invalid loader id: " + cursorLoader.getId());
+        }
     }
 
     public static void initImageLoader(Context context) {

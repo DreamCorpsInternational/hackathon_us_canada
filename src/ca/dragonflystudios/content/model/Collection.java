@@ -20,7 +20,7 @@ public class Collection
     public ContentPath itemsPath;
     public ContentPath[] itemFieldPaths;
     public String[] itemFieldNames;
-
+    public String[] itemFieldNamesWithId;
 
     public Model getModel()
     {
@@ -39,6 +39,12 @@ public class Collection
         this.itemsPath = itemsPath;
         this.itemFieldPaths = itemFieldPaths;
         this.itemFieldNames = itemFieldNames;
+        if (null != itemFieldNames) {
+            this.itemFieldNamesWithId = new String[itemFieldNames.length+1];
+            this.itemFieldNamesWithId[0] = KEY_PRIMARY;
+            for (int i = 0; i < itemFieldNames.length; i++)
+                this.itemFieldNamesWithId[i+1] = itemFieldNames[i];
+        }
     }
 
     public Uri getUri()

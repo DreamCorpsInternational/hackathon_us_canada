@@ -100,7 +100,7 @@ public class Provider extends ContentProvider
         final int size = operations.size();
         final ContentProviderResult[] results = new ContentProviderResult[size];
 
-        if (size > 1) {
+        if (size > 0) {
             final Uri uri = operations.get(0).getUri();
             UriMapper.MCD mcd = UriMapper.resolve(uri);
             SQLiteDatabase db = mcd.database;
