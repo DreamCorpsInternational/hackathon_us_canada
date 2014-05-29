@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.dreamcorps.content.Book;
 import org.dreamcorps.content.Constants;
+import org.dreamcorps.lms.C;
 import org.dreamcorps.lms.R;
 
 import android.app.Activity;
@@ -20,11 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import ca.dragonflystudios.content.model.Collection;
+import ca.dragonflystudios.content.model.Model;
+import ca.dragonflystudios.content.service.Service;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -107,6 +111,15 @@ public class BookListviewActivity extends Activity {
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+    }
+
+    public static void requestBookInfo(Context context, String isbn)
+    {
+        Collection collection = Model.getModelByAuthority(C.DOUBAN_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
+        final Intent intent = new Intent(context, Service.class);
+        intent.putExtra(Service.KEY_COLLECTION_ID, collection.getId());
+        intent.putExtra(Service.KEY_SELECTION_ARGS, new String[] { isbn });
+        context.startService(intent);
     }
 
     private void startImagePagerActivity(int position) {
