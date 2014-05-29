@@ -11,6 +11,7 @@ import org.dreamcorps.ui.ImagePagerActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
 
         ImageView splashScreen = (ImageView) findViewById(R.id.mainSplashScreen);
+        splashScreen.setBackgroundColor(Color.BLACK);
         Random random = new Random();
         if(random.nextInt(10) > 5) {
             splashScreen.setImageResource(R.drawable.splashscreen);
