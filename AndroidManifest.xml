@@ -28,7 +28,10 @@
         </activity>
         <activity
             android:name="org.dreamcorps.ui.ImagePagerActivity"
-            android:label="@string/bookcover_pager" />
+            android:label="@string/bookcover_pager" />      
+        <activity
+            android:name="org.dreamcorps.ui.BookListviewActivity"
+            android:label="@string/book_listview" />
 
         <provider
             android:name="org.dreamcorps.content.LmsContentProvider"

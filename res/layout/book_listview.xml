@@ -3,12 +3,12 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.dreamcorps.lms.MainActivity"
+    tools:context="org.dreamcorps.ui.BookListviewActivity"
     tools:ignore="MergeRootFrame">
-
-    <ImageView  
-        android:id="@+id/mainSplashScreen"
+    <ListView
+        android:id="@+id/bookListview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+	</ListView>
 </RelativeLayout>
 
