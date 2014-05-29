@@ -4,9 +4,14 @@ import java.util.ArrayList;
 
 import org.dreamcorps.content.Book;
 import org.dreamcorps.content.Constants;
+import org.dreamcorps.lms.C;
 import org.dreamcorps.lms.R;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import ca.dragonflystudios.content.model.Collection;
+import ca.dragonflystudios.content.model.Model;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -35,18 +42,24 @@ public class ImagePagerActivity extends Activity
 
     ViewPager                   pager;
     ArrayList<Book>             bookList;
-
+    boolean mDidSetInitialPosition;
+    int mInitialPosition;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ImagePagerAdapter pagerAdapter = new ImagePagerAdapter();
+        getLoaderManager().initLoader(ImagePagerAdapter.BOOKDETAIL_LOADER_ID, null, pagerAdapter);
+        mDidSetInitialPosition = false;
+
         setContentView(R.layout.bookcover_pager);
 
         Bundle bundle = getIntent().getExtras();
         assert bundle != null;
         bookList = (ArrayList<Book>) bundle.getSerializable(Constants.bookList);
-        int pagerPosition = bundle.getInt(Constants.position, 0);
+        mInitialPosition = bundle.getInt(Constants.position, 0);
 
         if (savedInstanceState != null) {
-            pagerPosition = savedInstanceState.getInt(STATE_POSITION);
+            mInitialPosition = savedInstanceState.getInt(STATE_POSITION);
         }
 
         options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error)
@@ -54,21 +67,65 @@ public class ImagePagerActivity extends Activity
                 .bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true).displayer(new FadeInBitmapDisplayer(300)).build();
 
         pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new ImagePagerAdapter());
-        pager.setCurrentItem(pagerPosition);
+        pager.setAdapter(pagerAdapter);
     }
 
-    private class ImagePagerAdapter extends PagerAdapter
+    private class ImagePagerAdapter extends PagerAdapter implements LoaderManager.LoaderCallbacks<Cursor>
     {
 
         // private String[] images;
         private LayoutInflater inflater;
         private ImageLoader    imageLoader = ImageLoader.getInstance();
 
+        private Cursor mCursor;
+        protected static final int BOOKDETAIL_LOADER_ID = 2;
+
         ImagePagerAdapter()
         {
             // this.images = images;
             inflater = getLayoutInflater();
+        }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+        {
+            switch (i) {
+                case BOOKDETAIL_LOADER_ID:
+                    Collection collection = Model.getModelByAuthority(C.DREAMCORPS_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
+                    return new CursorLoader(ImagePagerActivity.this, collection.getUri(), collection.itemFieldNamesWithId, null, null, null);
+                default:
+                    throw new RuntimeException("Invalid loader id: " + i);
+            }
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+        {
+            switch (cursorLoader.getId()) {
+                case BOOKDETAIL_LOADER_ID:
+                    mCursor = cursor;
+                    if (!mDidSetInitialPosition) {
+                        mDidSetInitialPosition = true;
+                        notifyDataSetChanged();
+                        pager.setCurrentItem(mInitialPosition);
+                    }
+                    return;
+                default:
+                    throw new RuntimeException("Invalid loader id: " + cursorLoader.getId());
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> cursorLoader)
+        {
+            switch (cursorLoader.getId()) {
+                case BOOKDETAIL_LOADER_ID:
+                    mCursor = null;
+                    notifyDataSetChanged();
+                    return;
+                default:
+                    throw new RuntimeException("Invalid loader id: " + cursorLoader.getId());
+            }
         }
 
         @Override
@@ -83,7 +140,9 @@ public class ImagePagerActivity extends Activity
             ImageView imageView = (ImageView) imageLayout.findViewById(R.id.pager_image);
             final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
 
-            imageLoader.displayImage(bookList.get(position).getImageURL(), imageView, options, new SimpleImageLoadingListener() {
+            mCursor.moveToPosition(position);
+            final String imageUrl = mCursor.getString(mCursor.getColumnIndex(C.field.imageLarge));
+            imageLoader.displayImage(imageUrl, imageView, options, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
                     spinner.setVisibility(View.VISIBLE);
@@ -140,7 +199,10 @@ public class ImagePagerActivity extends Activity
 
         @Override
         public int getCount() {
-            return bookList.size();
+            if (null != mCursor)
+                return mCursor.getCount();
+            
+            return 0;
         }
     }
 }
