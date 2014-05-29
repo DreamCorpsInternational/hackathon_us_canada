@@ -36,7 +36,7 @@ public class MainActivity extends Activity
         ImageView splashScreen = (ImageView) findViewById(R.id.mainSplashScreen);
         splashScreen.setBackgroundColor(Color.BLACK);
         Random random = new Random();
-        if (random.nextInt(10) > 5) {
+        if (random.nextInt(10) > 3) {
             splashScreen.setImageResource(R.drawable.splashscreen);
         } else {
             splashScreen.setImageResource(R.drawable.yangyu);
