@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dreamcorps.content.Book;
+import org.dreamcorps.content.CheckISBN13;
 import org.dreamcorps.content.Constants;
 import org.dreamcorps.content.ISBNList;
 import org.dreamcorps.lms.C;
@@ -32,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -135,18 +137,34 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
             final EditText input = new EditText(this);
             alert.setView(input);
 
-            alert.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String isbn = input.getEditableText().toString();
-                    BookListviewActivity.requestBookInfo(BookListviewActivity.this, isbn);
-                }
-            });
+            alert.setPositiveButton("确认", null);
             alert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-                }
+            	public void onClick(DialogInterface dialog, int whichButton) {
+            		dialog.cancel();
+            	}
             });
-            AlertDialog alertDialog = alert.create();
+            
+            final AlertDialog alertDialog = alert.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            	@Override
+            	public void onShow(DialogInterface dialog) {
+            		Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            		b.setOnClickListener(new View.OnClickListener() {
+            			@Override
+            			public void onClick(View view) {
+            				String isbn = input.getEditableText().toString();
+            				CheckISBN13 code1 = new CheckISBN13(isbn);
+            				if (!code1.isValid()) {
+            					alertDialog.setMessage("ISBN输入验证失败! 请输入有效的ISBN");
+            				} else {
+            					BookListviewActivity.requestBookInfo(BookListviewActivity.this, isbn);
+            					alertDialog.dismiss();
+            				}
+            			}
+            		});
+            	}
+            });
+            
             alertDialog.show();
             return true;
         }
