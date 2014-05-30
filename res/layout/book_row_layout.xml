@@ -21,14 +21,29 @@
         android:layout_marginLeft="20dip"
         android:layout_toRightOf="@id/img"
         android:textStyle="bold" 
-        android:textSize = "17dip"
+        android:textSize = "17sp"
+        />
+    
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img"
+        android:layout_below="@id/name"
+        android:layout_alignLeft="@id/name"
+        /> 
+    <TextView
+        android:id="@+id/pubYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/author"
         />
  
     <TextView
         android:id="@+id/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_below="@id/author"
         android:layout_marginTop="2dip"
         android:layout_marginLeft="20dip"
         android:layout_toRightOf="@id/img"

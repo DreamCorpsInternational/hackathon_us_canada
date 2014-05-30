@@ -70,7 +70,8 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
                 .cacheOnDisk(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(20)).build();
 
         getLoaderManager().initLoader(BOOKINFO_LOADER_ID, null, this);
-        mBooksAdapter = new SimpleCursorAdapter(this, R.layout.book_row_layout, null, new String[] { C.field.title, C.field.isbn, C.field.imageSmall }, new int[] { R.id.name, R.id.desc, R.id.img }, 0) {
+        mBooksAdapter = new SimpleCursorAdapter(this, R.layout.book_row_layout, null, new String[] { C.field.title, C.field.isbn, C.field.imageSmall, C.field.author},
+                                                                                         new int[] { R.id.name, R.id.desc, R.id.img, R.id.author}, 0) {
             public void setViewImage (ImageView v, String value) {
                 mImageLoader.displayImage(value, v, mOptions, mAnimateFirstListener);
             }
@@ -93,8 +94,8 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
 
         ArrayList<Book> bookList = new ArrayList<Book>();
         for (int i = 0; i < bookNames.length; i++) {
-            bookList.add((new Book(bookNames[i], bookDescp[i],
-                    "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg")));
+          //  bookList.add((new Book(bookNames[i], bookDescp[i],
+          //          "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg")));
         }
         return bookList;
     }
@@ -260,7 +261,7 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
 
             Book book = getItem(position);
             if (book != null) {
-                viewHolder.name.setText(book.getName());
+                viewHolder.name.setText(book.getTitle());
                 viewHolder.desc.setText(book.getDescription());
                 imageLoader.displayImage(book.getImageURL(), viewHolder.img, options, animateFirstListener);
             }

@@ -44,6 +44,8 @@
         android:layout_below="@id/pager_image"
         android:gravity="right"
         android:textSize="20sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:maxLines="50"
+        android:scrollbars="vertical" />
     
 </RelativeLayout>

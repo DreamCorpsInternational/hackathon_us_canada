@@ -13,22 +13,28 @@ import ca.dragonflystudios.content.service.Service;
 public class Book implements Parcelable
 {
     private String imageURL;
-    private String name;
+    private String title;
     private String description;
+    private String author;
+    private String ISBN13;
+    private String pubYear;
 
-    public Book(String name, String description, String imageURL)
+    public Book(String title, String description, String imageURL, String author, String ISBN, String pubYear)
     {
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.imageURL = imageURL;
+        this.author = author;
+        this.ISBN13 = ISBN;
+        this.pubYear = pubYear;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -49,12 +55,15 @@ public class Book implements Parcelable
 
     public Book(Parcel in)
     {
-        String[] data = new String[3];
+        String[] data = new String[6];
 
         in.readStringArray(data);
         this.imageURL = data[0];
-        this.name = data[1];
+        this.title = data[1];
         this.description = data[2];
+        this.ISBN13 = data[3];
+        this.author = data[4];
+        this.pubYear = data[5];
     }
 
     @Override
@@ -65,8 +74,32 @@ public class Book implements Parcelable
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] { this.imageURL, this.name, this.description });
+        dest.writeStringArray(new String[] { this.imageURL, this.title, this.description, this.ISBN13, this.author, this.pubYear});
 
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getISBN13() {
+        return ISBN13;
+    }
+
+    public void setISBN13(String ISBN) {
+        this.ISBN13 = ISBN;
+    }
+
+    public String getPubYear() {
+        return pubYear;
+    }
+
+    public void setPubYear(String pubYear) {
+        this.pubYear = pubYear;
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

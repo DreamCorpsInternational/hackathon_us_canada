@@ -21,5 +21,5 @@ public class C
         public final static String imageLarge = "imageLarge";
     }
 
-    public final static String[] bookFields = { field.id, field.title, field.author, field.isbn, field.summary, field.imageSmall, field.imageLarge };
+    public final static String[] bookFields = { field.id, field.title, field.author, field.isbn, field.summary, field.imageSmall, field.imageLarge};
 }

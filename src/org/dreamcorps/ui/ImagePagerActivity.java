@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,10 @@ public class ImagePagerActivity extends Activity
 
     ViewPager                   pager;
     ArrayList<Book>             bookList;
+    
+    //enable scrollable summary
+    TextView summary;
+    
     boolean mDidSetInitialPosition;
     int mInitialPosition;
     
@@ -54,6 +60,7 @@ public class ImagePagerActivity extends Activity
 
         setContentView(R.layout.bookcover_pager);
 
+        
         Bundle bundle = getIntent().getExtras();
         assert bundle != null;
         bookList = (ArrayList<Book>) bundle.getSerializable(Constants.bookList);
@@ -69,6 +76,12 @@ public class ImagePagerActivity extends Activity
 
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+        
+
+        // enable scrollable summary
+        //// summary is always null for some reason
+        //summary = (TextView) findViewById(R.id.summary);
+        //summary.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private class ImagePagerAdapter extends PagerAdapter implements LoaderManager.LoaderCallbacks<Cursor>
