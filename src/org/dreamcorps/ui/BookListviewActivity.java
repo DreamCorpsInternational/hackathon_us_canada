@@ -70,8 +70,8 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
                 .cacheOnDisk(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(20)).build();
 
         getLoaderManager().initLoader(BOOKINFO_LOADER_ID, null, this);
-        mBooksAdapter = new SimpleCursorAdapter(this, R.layout.book_row_layout, null, new String[] { C.field.title, C.field.isbn, C.field.imageSmall, C.field.author},
-                                                                                         new int[] { R.id.name, R.id.desc, R.id.img, R.id.author}, 0) {
+        mBooksAdapter = new SimpleCursorAdapter(this, R.layout.book_row_layout, null, new String[] { C.field.title, C.field.isbn, C.field.imageSmall, C.field.author, C.field.publisher, C.field.pubDate},
+                                                                                         new int[] { R.id.title, R.id.isbn, R.id.thumbnail, R.id.author, R.id.publisher, R.id.pubdate }, 0) {
             public void setViewImage (ImageView v, String value) {
                 mImageLoader.displayImage(value, v, mOptions, mAnimateFirstListener);
             }
@@ -250,9 +250,9 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
                 convertView = inflater.inflate(R.layout.book_row_layout, null);
 
                 viewHolder = new ViewHolder();
-                viewHolder.img = (ImageView) convertView.findViewById(R.id.img);
-                viewHolder.desc = (TextView) convertView.findViewById(R.id.desc);
-                viewHolder.name = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.img = (ImageView) convertView.findViewById(R.id.thumbnail);
+                viewHolder.desc = (TextView) convertView.findViewById(R.id.isbn);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.title);
 
                 convertView.setTag(viewHolder);
             } else {
