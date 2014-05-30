@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.dreamcorps.content.Book;
 import org.dreamcorps.content.Constants;
+import org.dreamcorps.content.ISBNList;
 import org.dreamcorps.lms.C;
 import org.dreamcorps.lms.R;
 
@@ -18,9 +19,11 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,9 +61,19 @@ public class BookListviewActivity extends Activity implements LoaderManager.Load
 
     private ArrayList<Book> bookList;
 
+    private final static String FIRST_START_KEY = "is first start";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+       if (prefs.getBoolean(FIRST_START_KEY, true)) {
+           prefs.edit().putBoolean(FIRST_START_KEY, false);
+           for (String isbn : ISBNList.isbnArray)
+               requestBookInfo(this, isbn);
+       }
+
         setContentView(R.layout.book_listview);
 
         initImageLoader(getApplicationContext());
