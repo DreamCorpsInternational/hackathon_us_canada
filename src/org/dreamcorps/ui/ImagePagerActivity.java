@@ -154,8 +154,13 @@ public class ImagePagerActivity extends Activity
             ImageView imageView = (ImageView) imageLayout.findViewById(R.id.pager_image);
             final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
             final TextView titleView = (TextView) imageLayout.findViewById(R.id.title);
+            final TextView authorView = (TextView) imageLayout.findViewById(R.id.author);
+            final TextView publisherView = (TextView) imageLayout.findViewById(R.id.publisher);
+            final TextView pubDateView = (TextView) imageLayout.findViewById(R.id.pubdate);
+            final TextView isbnView = (TextView) imageLayout.findViewById(R.id.isbn);
             final TextView summaryView = (TextView) imageLayout.findViewById(R.id.summary);
-
+            summaryView.setMovementMethod(new ScrollingMovementMethod());
+            
             mCursor.moveToPosition(position);
             final String imageUrl = mCursor.getString(mCursor.getColumnIndex(C.field.imageLarge));
             imageLoader.displayImage(imageUrl, imageView, options, new SimpleImageLoadingListener() {
@@ -195,8 +200,16 @@ public class ImagePagerActivity extends Activity
                 }
             });
             final String title = mCursor.getString(mCursor.getColumnIndex(C.field.title));
+            final String author = mCursor.getString(mCursor.getColumnIndex(C.field.author));
+            final String publisher = mCursor.getString(mCursor.getColumnIndex(C.field.publisher));
+            final String pubdate = mCursor.getString(mCursor.getColumnIndex(C.field.pubDate));
+            final String isbn = mCursor.getString(mCursor.getColumnIndex(C.field.isbn));
             final String summary = mCursor.getString(mCursor.getColumnIndex(C.field.summary));
             titleView.setText(title);
+            authorView.setText(author);
+            publisherView.setText(publisher);
+            pubDateView.setText(pubdate);
+            isbnView.setText("ISBN: " + isbn);
             summaryView.setText(summary);
 
             view.addView(imageLayout, 0);
