@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="app_name">hackathon_us_canada</string>
+    <string name="app_name">梦想图书馆</string>
     <string name="hello_world">Hello world!!</string>
     
     <string name="action_settings">Settings</string>
