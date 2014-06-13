@@ -2,7 +2,7 @@ package org.dreamcorps.lms;
 
 import java.util.Random;
 
-import org.dreamcorps.ui.BookListviewActivity;
+import org.dreamcorps.ui.BookListActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -72,7 +72,7 @@ public class MainActivity extends Activity
     }
 
     private void startBookListviewActivity() {
-        Intent intent = new Intent(this, BookListviewActivity.class);
+        Intent intent = new Intent(this, BookListActivity.class);
         startActivity(intent);
     }
 
