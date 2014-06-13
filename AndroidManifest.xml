@@ -30,7 +30,7 @@
             android:name="org.dreamcorps.ui.ImagePagerActivity"
             android:label="@string/bookcover_pager" />      
         <activity
-            android:name="org.dreamcorps.ui.BookListviewActivity"
+            android:name="org.dreamcorps.ui.BookListActivity"
             android:label="@string/book_listview" />
 
         <provider
