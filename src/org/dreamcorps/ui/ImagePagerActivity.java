@@ -38,14 +38,11 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 public class ImagePagerActivity extends Activity
 {
-
     private static final String STATE_POSITION = "STATE_POSITION";
 
     DisplayImageOptions         options;
-
     ViewPager                   pager;
     ArrayList<Book>             bookList;
-    
     //enable scrollable summary
     TextView summary;
     
@@ -60,7 +57,6 @@ public class ImagePagerActivity extends Activity
 
         setContentView(R.layout.bookcover_pager);
 
-        
         Bundle bundle = getIntent().getExtras();
         assert bundle != null;
         bookList = (ArrayList<Book>) bundle.getSerializable(Constants.bookList);
@@ -76,17 +72,12 @@ public class ImagePagerActivity extends Activity
 
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
-        
 
-        // enable scrollable summary
-        //// summary is always null for some reason
-        //summary = (TextView) findViewById(R.id.summary);
-        //summary.setMovementMethod(new ScrollingMovementMethod());
+        
     }
 
     private class ImagePagerAdapter extends PagerAdapter implements LoaderManager.LoaderCallbacks<Cursor>
     {
-
         // private String[] images;
         private LayoutInflater inflater;
         private ImageLoader    imageLoader = ImageLoader.getInstance();
@@ -100,17 +91,17 @@ public class ImagePagerActivity extends Activity
             inflater = getLayoutInflater();
         }
 
-        @Override
-        public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
-        {
-            switch (i) {
-                case BOOKDETAIL_LOADER_ID:
-                    Collection collection = Model.getModelByAuthority(C.DREAMCORPS_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
-                    return new CursorLoader(ImagePagerActivity.this, collection.getUri(), collection.itemFieldNamesWithId, null, null, null);
-                default:
-                    throw new RuntimeException("Invalid loader id: " + i);
+            @Override
+            public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+            {
+                switch (i) {
+                    case BOOKDETAIL_LOADER_ID:
+                        Collection collection = Model.getModelByAuthority(C.DREAMCORPS_AUTHORITY).getCollectionByName(C.COLLECTION_NAME_BOOKS);
+                        return new CursorLoader(ImagePagerActivity.this, collection.getUri(), collection.itemFieldNamesWithId, null, null, null);
+                    default:
+                        throw new RuntimeException("Invalid loader id: " + i);
+                }
             }
-        }
 
         @Override
         public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
@@ -234,7 +225,6 @@ public class ImagePagerActivity extends Activity
         public int getCount() {
             if (null != mCursor)
                 return mCursor.getCount();
-            
             return 0;
         }
     }
