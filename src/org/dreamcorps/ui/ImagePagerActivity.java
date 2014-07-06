@@ -73,10 +73,7 @@ public class ImagePagerActivity extends Activity
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
 
-        // enable scrollable summary
-        //// summary is always null for some reason
-        //summary = (TextView) findViewById(R.id.summary);
-        //summary.setMovementMethod(new ScrollingMovementMethod());
+        
     }
 
     private class ImagePagerAdapter extends PagerAdapter implements LoaderManager.LoaderCallbacks<Cursor>
